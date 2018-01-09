@@ -61,7 +61,7 @@ Vue.component('my-detail-row', {
           '<div class="ui items">',
             '<div class="item">',
               '<div class="image">',
-                '<img src="./assets/card/17_allstar_PJW.jpg">',
+                '<img src="./static/17_allstar_PJW.jpg">',
               '</div>',
               '<div class="content">',
                 '<a class="header">{{rowData.球員名稱}}</a>',
@@ -254,7 +254,7 @@ let tableColumns = [
   {
     name: '球員名稱',
     title: ' 球員名稱',
-    sortField: '球員名稱',
+    sortField: 'PlayerName',
     titleClass: 'center aligned',
     dataClass: 'center aligned',
     width: '100px'
@@ -262,7 +262,7 @@ let tableColumns = [
   {
     name: '卡片等級',
     title: ' 卡片等級',
-    sortField: '卡片等級',
+    sortField: 'LevelName',
     callback: 'cardLevel',
     titleClass: 'center aligned',
     dataClass: 'center aligned',
@@ -271,7 +271,7 @@ let tableColumns = [
   {
     name: '評價',
     title: ' 評價',
-    sortField: '評價',
+    sortField: 'Ev',
     titleClass: 'center aligned',
     dataClass: 'center aligned',
     callback: 'evFormat', 
@@ -280,7 +280,7 @@ let tableColumns = [
   {
     name: '年度月份',
     title: ' 年度月份',
-    sortField: '年度月份',
+    sortField: 'YearMonth',
     titleClass: 'center aligned',
     dataClass: 'center aligned',
     width: '90px'
@@ -288,7 +288,7 @@ let tableColumns = [
   {
     name: '打擊L',
     title: ' 打擊L',
-    sortField: '打擊L',
+    sortField: 'HitL',
     titleClass: 'center aligned',
     dataClass: 'center aligned',
     width: '62px'
@@ -296,7 +296,7 @@ let tableColumns = [
   {
     name: '打擊R',
     title: ' 打擊R',
-    sortField: '打擊R',
+    sortField: 'HitR',
     titleClass: 'center aligned',
     dataClass: 'center aligned',
     width: '62px'
@@ -304,7 +304,7 @@ let tableColumns = [
   {
     name: '力量',
     title: ' 力量',
-    sortField: '力量',
+    sortField: 'Pow',
     titleClass: 'center aligned',
     dataClass: 'center aligned',
     width: '62px'
@@ -312,7 +312,7 @@ let tableColumns = [
   {
     name: '選球',
     title: ' 選球',
-    sortField: '選球',
+    sortField: 'Eye',
     titleClass: 'center aligned',
     dataClass: 'center aligned',
     width: '62px'
@@ -320,7 +320,7 @@ let tableColumns = [
   {
     name: '跑壘',
     title: ' 跑壘',
-    sortField: '跑壘',
+    sortField: 'Agi',
     titleClass: 'center aligned',
     dataClass: 'center aligned',
     width: '62px'
@@ -328,7 +328,7 @@ let tableColumns = [
   {
     name: '守備',
     title: ' 守備',
-    sortField: '守備',
+    sortField: 'Def',
     titleClass: 'center aligned',
     dataClass: 'center aligned',
     width: '62px'
@@ -336,7 +336,7 @@ let tableColumns = [
   {
     name: '傳球',
     title: ' 傳球',
-    sortField: '傳球',
+    sortField: 'Pass',
     titleClass: 'center aligned',
     dataClass: 'center aligned',
     width: '62px'
@@ -344,7 +344,7 @@ let tableColumns = [
   {
     name: '隊伍',
     title: ' 隊伍',
-    sortField: '隊伍',
+    sortField: 'Team',
     callback: 'teamColor',
     titleClass: 'center aligned',
     dataClass: 'center aligned',
@@ -359,11 +359,20 @@ let tableColumns = [
   {
     name: '守備適性',
     title: ' 守備適性',
-    sortField: '守備適性',
+    sortField: 'Dpv',
     callback: 'formateDefValue',
     titleClass: 'center aligned',
     dataClass: 'center aligned',
     width: '90px',
+  },
+  {
+    name: '姿勢',
+    title: ' 姿勢',
+    sortField: 'Style',
+    titleClass: 'center aligned',
+    dataClass: 'center aligned',
+    callback: 'styleFormat',
+    width: '62px'
   },
 
   // {
@@ -437,7 +446,7 @@ let vm = new Vue({
     tableHeight: '600px',
     vuetableFields: false,
     sortOrder: [{
-        field: 'name',
+        field: 'id',
         direction: 'asc',
     }],
     multiSort: true,
@@ -514,6 +523,7 @@ let vm = new Vue({
           隊伍: data[i].隊伍,
           // 守位: data[i].守位,
           守備適性: data[i].守備適性,
+          姿勢: data[i].姿勢,
           ImgUrl: data[i].ImgUrl
         })
       }
@@ -542,6 +552,13 @@ let vm = new Vue({
       if (value === null) return ''
       fmt = (typeof(fmt) === 'undefined') ? 'D MMM YYYY' : fmt
       return moment(value, 'YYYY-MM-DD').format(fmt)
+    },
+    styleFormat(value){
+      if(value == 'Y' ){
+        return '<i class="checkmark icon"></i>'
+      }else{
+        return '<i class="remove icon"></i>'
+      }
     },
     evFormat(value){
       if(value < 60 ){
@@ -684,10 +701,10 @@ let vm = new Vue({
     },
     queryParams (sortOrder, currentPage, perPage) {
       return {
-        'sort': sortOrder[0].field + '|' + sortOrder[0].direction,
-        'order': sortOrder[0].direction,
-        'page': currentPage,
-        'per_page': perPage
+        'sort': sortOrder[0].field + '|' + sortOrder[0].direction
+        // 'order': sortOrder[0].direction,
+        // 'page': currentPage,
+        // 'per_page': perPage
       }
     },
     onCellClicked (data, field, event) {
