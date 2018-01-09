@@ -23,7 +23,6 @@ Vue.component('custom-actions', {
   },
   methods: {
     onClick (action, data) {
-      console.log('actions: on-click', data.球員名稱)
       sweetAlert(action, data.球員名稱)
     },
   }
@@ -236,13 +235,13 @@ let tableColumns = [
     dataClass: 'right aligned',
     width: '50px'
   },
-  {
-    name: '__checkbox',
-    width: '30px',
-    title: 'checkbox',
-    titleClass: 'center aligned',
-    dataClass: 'center aligned'
-  },
+  // {
+  //   name: '__checkbox',
+  //   width: '30px',
+  //   title: 'checkbox',
+  //   titleClass: 'center aligned',
+  //   dataClass: 'center aligned'
+  // },
   {
     name: 'id',
     title: '<i class="unordered list icon"></i> 詳細',
@@ -611,7 +610,7 @@ let vm = new Vue({
         case 'TOP':
             return '<span class="ui black label">TOP</span>'
         case 'TW-APBC':
-            return '<a class="ui label"><img class="ui right spaced avatar image" src="https://upload.wikimedia.org/wikipedia/zh/a/ab/CT_baseball_team.gif">APBC</a>'
+            return '<a class="ui label"><i class="tw flag"></i>APBC</a>'
           break;
       }
     },
