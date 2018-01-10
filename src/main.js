@@ -440,7 +440,7 @@ let vm = new Vue({
   data: {
     loading: '',
     searchFor: '',
-    moreParams: { aa: 1111, bb: 222 },
+    // moreParams: { aa: 1111, bb: 222 },
     fields: tableColumns,
     tableHeight: '600px',
     vuetableFields: false,
@@ -481,7 +481,7 @@ let vm = new Vue({
       // }
       transformed.pagination = {
         total: 1,
-        per_page: 1,
+        per_page: 15,
         current_page: 1,
         last_page: 20,
         next_page_url: null,
@@ -700,10 +700,10 @@ let vm = new Vue({
     },
     queryParams (sortOrder, currentPage, perPage) {
       return {
-        'sort': sortOrder[0].field + '|' + sortOrder[0].direction
-        // 'order': sortOrder[0].direction,
-        // 'page': currentPage,
-        // 'per_page': perPage
+        'sort': sortOrder[0].field + '|' + sortOrder[0].direction,
+        'order': sortOrder[0].direction,
+        'page': currentPage,
+        'per_page': perPage
       }
     },
     onCellClicked (data, field, event) {
