@@ -23,7 +23,7 @@ Vue.component('custom-actions', {
   },
   methods: {
     onClick (action, data) {
-      sweetAlert(action, data.球員名稱)
+      // sweetAlert(action, data.球員名稱)
     },
   }
 })
@@ -242,14 +242,14 @@ let tableColumns = [
   //   titleClass: 'center aligned',
   //   dataClass: 'center aligned'
   // },
-  {
-    name: 'id',
-    title: '<i class="unordered list icon"></i> 詳細',
-    dataClass: 'center aligned',
-    width: '100px',
-    callback: 'showDetailRow'
+  // {
+  //   name: 'id',
+  //   title: '<i class="unordered list icon"></i> 詳細',
+  //   dataClass: 'center aligned',
+  //   width: '100px',
+  //   callback: 'showDetailRow'
 
-  },
+  // },
   {
     name: '球員名稱',
     title: ' 球員名稱',
