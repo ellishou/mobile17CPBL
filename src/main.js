@@ -451,11 +451,17 @@ let vm = new Vue({
     multiSort: true,
     paginationComponent: 'vuetable-pagination',
     perPage: 10,
+    position: 10,
     paginationInfoTemplate: 'Showing record: {from} to {to} from {total} item(s)',
     lang: lang,
   },
   watch: {
     'perPage' (val, oldVal) {
+      this.$nextTick(function() {
+        this.$refs.vuetable.refresh()
+      })
+    },
+    'position' (val, oldVal) {
       this.$nextTick(function() {
         this.$refs.vuetable.refresh()
       })
@@ -469,26 +475,26 @@ let vm = new Vue({
   methods: {
     transform (data) {
       let transformed = {}
-      // transformed.pagination = {
-      //   total: data.total,
-      //   per_page: data.per_page,
-      //   current_page: data.current_page,
-      //   last_page: data.last_page,
-      //   next_page_url: data.next_page_url,
-      //   prev_page_url: data.prev_page_url,
-      //   from: data.from,
-      //   to: data.to
-      // }
       transformed.pagination = {
-        total: 1,
-        per_page: 15,
-        current_page: 1,
-        last_page: 20,
-        next_page_url: null,
-        prev_page_url: null,
-        from: 1,
-        to: 10
+        total: data.total,
+        per_page: data.per_page,
+        current_page: data.current_page,
+        last_page: data.last_page,
+        next_page_url: data.next_page_url,
+        prev_page_url: data.prev_page_url,
+        from: data.from,
+        to: data.to
       }
+      // transformed.pagination = {
+      //   total: 1,
+      //   per_page: 15,
+      //   current_page: 1,
+      //   last_page: 20,
+      //   next_page_url: null,
+      //   prev_page_url: null,
+      //   from: 1,
+      //   to: 10
+      // }
 
       transformed.data = []
       data = data.data
@@ -698,11 +704,13 @@ let vm = new Vue({
     rowClassCB (data, index) {
       return (index % 2) === 0 ? 'odd' : 'even'
     },
-    queryParams (sortOrder, currentPage, perPage) {
+    queryParams (sortOrder, currentPage, perPage ,position) {
+      // console.log(sortOrder, currentPage, perPage ,position);
       return {
         'sort': sortOrder[0].field + '|' + sortOrder[0].direction,
         'order': sortOrder[0].direction,
         'page': currentPage,
+        'position': position,
         'per_page': perPage
       }
     },

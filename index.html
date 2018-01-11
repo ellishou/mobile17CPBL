@@ -71,25 +71,25 @@
   <body>
     <div class="ui vertical segment">
       <div class="ui container">
-        <div class="ui input">
+        <!-- <div class="ui input">
           <input type="text" placeholder="輸入想要尋找的球員名稱">
           <div class="ui search multiple selection dropdown">
               <div class="text">Search</div>
           </div>
           <div class="ui multiple selection dropdown">
             <!-- This will receive comma separated value like OH,TX,WY !-->
-            <input name="states" type="hidden">
+            <!-- <input name="states" type="hidden">
             <i class="dropdown icon"></i>
             <div class="default text">守備位置</div>
             
-          </div>
-        </div>
+          </div> -->
+        <!-- </<data></data>iv> --> 
         <div id="app" class="ui vertical stripe segment">
 
 
-              <!-- <div id="content" class="ui basic segment">
+              <div id="content" class="ui basic segment">
 
-                  <h3 class="ui header">List of Players</h3>
+                  <!-- <h3 class="ui header">List of Players</h3> -->
                   
                   <div class="ui grid">
                     <div class="ui left aligned nine wide column">
@@ -108,18 +108,19 @@
                           Settings
                         </button>
                       </div>
-                  </div><!-- ui grid --> 
+                  </div> 
 
                   <div :class="[{'vuetable-wrapper ui basic segment': true}, loading]">
 
                     <vuetable ref="vuetable"
-                      api-url="http://172.16.41.4:4000/api/fielder/"
+                      api-url="http://localhost:4000/api/fielder/"
                       :fields="fields"
                       :table-height="tableHeight"
                       pagination-path="pagination"
                       :sort-order="sortOrder"
                       :multi-sort="multiSort"
                       :per-page="perPage"
+                      :position="position"
                       :query-params="queryParams"
                       detail-row-component="my-detail-row"
                       detail-row-transition="expand"
