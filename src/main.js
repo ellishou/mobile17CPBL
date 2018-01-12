@@ -10,7 +10,7 @@ let E_SERVER_ERROR = 'Error communicating with the server'
 Vue.component('custom-actions', {
   template: [
     '<div>',
-      '<button class="ui red button" @click="onClick(\'Card\', rowData)"><i class="zoom icon"></i></button>',
+      // '<button class="ui red button" @click="onClick(\'Card\', rowData)"><i class="zoom icon"></i></button>',
       '<button class="ui blue button" @click="onClick(\'edit-item\', rowData)"><i class="edit icon"></i></button>',
       '<button class="ui green button" @click="onClick(\'delete-item\', rowData)"><i class="delete icon"></i></button>',
     '</div>'
@@ -24,7 +24,31 @@ Vue.component('custom-actions', {
   methods: {
     onClick (action, data) {
       var options = {
-        title: action,
+        title: '',
+        text: '<img src="./static/'+data.ImgUrl+'">',
+        html: true
+      };
+      sweetAlert(options)
+    },
+  }
+})
+
+Vue.component('ImgShow', {
+  template: [
+    '<div>',
+      '<button class="ui red button" @click="onClick(rowData)"><i class="zoom icon"></i></button>',
+    '</div>'
+  ].join(''),
+  props: {
+    rowData: {
+      type: Object,
+      required: true
+    }
+  },
+  methods: {
+    onClick (data) {
+      var options = {
+        title: '',
         text: '<img src="./static/'+data.ImgUrl+'">',
         html: true
       };
@@ -267,6 +291,20 @@ let tableColumns = [
     callback: 'mouseMove'
   },
   {
+    name: '__component:ImgShow',
+    title: '照片',
+    titleClass: 'center aligned',
+    dataClass: 'center aligned',
+    width: '62px'
+  },
+  // {
+  //   name: '__component:custom-actions',
+  //   title: 'Actions',
+  //   titleClass: 'center aligned',
+  //   dataClass: 'center aligned',
+  //   width: '150px'
+  // },
+  {
     name: '卡片等級',
     title: ' 卡片等級',
     sortField: 'LevelName',
@@ -380,7 +418,7 @@ let tableColumns = [
     dataClass: 'center aligned',
     callback: 'styleFormat',
     width: '62px'
-  },
+  }
 
   // {
   //   name: 'name',
@@ -427,13 +465,6 @@ let tableColumns = [
   //   callback: 'gender',
   //   width: '100px',
   // },
-  {
-    name: '__component:custom-actions',
-    title: 'Actions',
-    titleClass: 'center aligned',
-    dataClass: 'center aligned',
-    width: '150px'
-  }
 ]
 
 /* eslint-disable no-new */
