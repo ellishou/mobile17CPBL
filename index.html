@@ -77,13 +77,16 @@
               <div class="text">Search</div>
           </div>
           <div class="ui multiple selection dropdown">
-            <!-- This will receive comma separated value like OH,TX,WY !-->
-            <!-- <input name="states" type="hidden">
+             This will receive comma separated value like OH,TX,WY !
+             <input name="states" type="hidden">
             <i class="dropdown icon"></i>
             <div class="default text">守備位置</div>
             
-          </div> -->
-        <!-- </<data></data>iv> --> 
+          </div> 
+         </<data></data>iv> --> 
+         <div class="ui search multiple selection dropdown">
+              <div class="default text">守備位置</div>
+          </div>
         <div id="app" class="ui vertical stripe segment">
 
 
@@ -92,15 +95,16 @@
                   <!-- <h3 class="ui header">List of Players</h3> -->
                   
                   <div class="ui grid">
+
                     <div class="ui left aligned nine wide column">
                           
-                          <div class="ui labeled icon input">
+                          <!-- <div class="ui labeled icon input">
                             <div class="ui label">Search:</div>
                             <input v-model="searchFor" class="ui input" @keyup.enter="setFilter">
                             <i class="search icon"></i>
                           </div>
                           <button class="ui button primary" @click="setFilter">Go</button>
-                          <button class="ui button" @click="resetFilter">Reset</button>
+                          <button class="ui button" @click="resetFilter">Reset</button> -->
                       </div>
                       <div class="ui right aligned seven wide column">
                         <button class="ui basic button" id="settingsBtn" @click="showSettingsModal">
@@ -120,7 +124,7 @@
                       :sort-order="sortOrder"
                       :multi-sort="multiSort"
                       :per-page="perPage"
-                      :position="position"
+                      :append-params="moreParams"
                       :query-params="queryParams"
                       detail-row-component="my-detail-row"
                       detail-row-transition="expand"
@@ -129,7 +133,6 @@
                       @vuetable:load-success="onLoadSuccess"
                       @vuetable:loading="showLoader"
                       @vuetable:loaded="hideLoader"
-                      @vuetable:cell-clicked="onCellClicked"
                       @vuetable:initialized="onInitialized"
                       @vuetable:data-reset="onDataReset"
                     ></vuetable>

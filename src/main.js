@@ -10,7 +10,7 @@ let E_SERVER_ERROR = 'Error communicating with the server'
 Vue.component('custom-actions', {
   template: [
     '<div>',
-      '<button class="ui red button" @click="onClick(\'view-item\', rowData)"><i class="zoom icon"></i></button>',
+      '<button class="ui red button" @click="onClick(\'Card\', rowData)"><i class="zoom icon"></i></button>',
       '<button class="ui blue button" @click="onClick(\'edit-item\', rowData)"><i class="edit icon"></i></button>',
       '<button class="ui green button" @click="onClick(\'delete-item\', rowData)"><i class="delete icon"></i></button>',
     '</div>'
@@ -23,7 +23,12 @@ Vue.component('custom-actions', {
   },
   methods: {
     onClick (action, data) {
-      // sweetAlert(action, data.球員名稱)
+      var options = {
+        title: action,
+        text: '<img src="./static/'+data.ImgUrl+'">',
+        html: true
+      };
+      sweetAlert(options)
     },
   }
 })
@@ -60,12 +65,14 @@ Vue.component('my-detail-row', {
           '<div class="ui items">',
             '<div class="item">',
               '<div class="image">',
-                '<img src="./static/17_allstar_PJW.jpg">',
+                   // '<img src="./static/'+{{rowData.ImgUrl}}+'">',
+                '<img src=./static/{rowData.ImgUrl}>',
+                  // '{{rowData.ImgUrl}}',
               '</div>',
               '<div class="content">',
                 '<a class="header">{{rowData.球員名稱}}</a>',
                 '<div class="meta">',
-                  '<a class="ui teal label">打擊L/R',
+                  '<a class="ui teal label">打擊L /R',
                     '<div class="detail">{{rowData.打擊L}} / {{rowData.打擊R}}</div>',
                   '</a>',
                 '</div>',
@@ -256,7 +263,8 @@ let tableColumns = [
     sortField: 'PlayerName',
     titleClass: 'center aligned',
     dataClass: 'center aligned',
-    width: '100px'
+    width: '100px',
+    callback: 'mouseMove'
   },
   {
     name: '卡片等級',
@@ -440,7 +448,7 @@ let vm = new Vue({
   data: {
     loading: '',
     searchFor: '',
-    // moreParams: { aa: 1111, bb: 222 },
+    moreParams: { position: '2,3,4,5,6,7,8,9,10' },
     fields: tableColumns,
     tableHeight: '600px',
     vuetableFields: false,
@@ -451,17 +459,12 @@ let vm = new Vue({
     multiSort: true,
     paginationComponent: 'vuetable-pagination',
     perPage: 10,
-    position: 10,
+    // position: 10,
     paginationInfoTemplate: 'Showing record: {from} to {to} from {total} item(s)',
     lang: lang,
   },
   watch: {
     'perPage' (val, oldVal) {
-      this.$nextTick(function() {
-        this.$refs.vuetable.refresh()
-      })
-    },
-    'position' (val, oldVal) {
       this.$nextTick(function() {
         this.$refs.vuetable.refresh()
       })
@@ -557,6 +560,10 @@ let vm = new Vue({
       if (value === null) return ''
       fmt = (typeof(fmt) === 'undefined') ? 'D MMM YYYY' : fmt
       return moment(value, 'YYYY-MM-DD').format(fmt)
+    },
+    mouseMove(value){
+      //@click="onClick(\'view-item\', rowData)"
+      return '<span @click="clickEvent">'+value+'</span>'
     },
     styleFormat(value){
       if(value == 'Y' ){
@@ -710,7 +717,6 @@ let vm = new Vue({
         'sort': sortOrder[0].field + '|' + sortOrder[0].direction,
         'order': sortOrder[0].direction,
         'page': currentPage,
-        'position': position,
         'per_page': perPage
       }
     },
