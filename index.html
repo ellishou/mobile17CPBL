@@ -103,9 +103,13 @@
                           <button class="ui button primary" @click="setFilter">Go</button>
                           <button class="ui button" @click="resetFilter">Reset</button> -->
                           <div class="ui right aligned seven wide column">
-                            <button class="ui basic button" id="settingsBtn" @click="showFilterModal">
+                            <button class="ui basic button" @click="showFilterModal">
                               <i class="sidebar icon"></i>
                               篩選
+                            </button>
+                            <button class="ui basic button" @click="showEditModal">
+                              <i class="icon user"></i>
+                              Add Friend
                             </button>
                           </div>
                         </div>
@@ -156,6 +160,9 @@
                   <filter-modal ref="filterModal"
                     :vuetable-fields="vuetableFields"
                   ></filter-modal>
+                  <edit-modal ref="filterModal"
+                    :vuetable-fields="vuetableFields"
+                  ></edit-modal>
 
                 </div><!-- content -->
 
