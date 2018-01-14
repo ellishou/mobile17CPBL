@@ -153,48 +153,131 @@ Vue.component('my-detail-row', {
   },
 })
 
+Vue.component('filter-modal', {
+  template: `
+    <div class="ui small modal" id="filterModal">
+      <div class="header">篩選</div>
+      <div class="field">
+        <label class="ui large label">
+          <i class="filter icon"></i>
+          球員姓名
+        </label>
+        <div class="ui left icon input">
+          <input type="text" placeholder="輸入部分球員名稱" ref="playerName">
+          <i class="users icon"></i>
+        </div>
+      </div>
+      <div class="field">
+        <label class="ui large label">
+          <i class="filter icon"></i>
+          守備位置
+        </label>
+        <div  class="ui search multiple selection dropdown" id="selectedPostion" ref="selectedPostion">
+          <div class="default text">全部守備位置</div>
+            <div class="menu">
+              <div class="item" v-for="postion in postionList" :data-value="postion.ID" >
+                {{postion.PositionNameCN}}
+              </div>
+            </div>
+        </div >
+      </div>
+      <div class="field"> 
+        <label class="ui large label">
+          <i class="filter icon"></i>
+          隊伍
+        </label>
+        <div class="ui search multiple selection dropdown" id="selectedTeam" ref="selectedTeam">
+          <div class="default text">全部隊伍</div>
+            <div class="menu" >
+              <div class="item" v-for="team in teamList" :data-value="team.ID" >
+                {{team.TeamNameCN}}
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="field"> 
+        <label class="ui large label">
+          <i class="filter icon"></i>
+          卡片類型
+        </label>
+        <div  class="ui search multiple selection dropdown"id="selectedLevel" ref="selectedLevel">
+          <div class="default text">全部類型</div>
+            <div class="menu">
+              <div class="item" v-for="playerlevel in playerlevelList" :data-value="playerlevel.ID" >
+                {{playerlevel.LevelNameCN}}
+              </div>
+            </div>
+        </div >
+      </div>
+      <div class="actions">
+        <div class="ui cancel button" @click="filterSearch"><i class="search icon"></i>Search</div>
+        <div class="ui cancel button"><i class="cancel icon"></i>Close</div>
+      </div>
+    </div>
+  `,
+  methods: {
+    filterSearch(){
+      var playerName = this.$refs.playerName.value;
+      var selectedPosition = $('#selectedPostion')
+        .dropdown('get value')
+      ;
+      var selectedTeam = $('#selectedTeam')
+        .dropdown('get value')
+      ;
+      var selectedLevel = $('#selectedLevel')
+        .dropdown('get value')
+      ;
+        vm.moreParams.player = playerName;
+        vm.moreParams.team = selectedTeam;
+        vm.moreParams.position = selectedPosition;
+        vm.moreParams.playerlevel = selectedLevel;
+        vm.$refs.vuetable.refresh();
+    }
+  },
+  mounted() {
+    //get postion list
+    axios.get("http://localhost:4000/api/dposition?Type=F")
+      .then(response => {this.postionList = response.data.data})
+    //get playerlevel list
+    axios.get("http://localhost:4000/api/playerlevel")
+      .then(response => {this.playerlevelList = response.data.data})
+    //get team list
+    axios.get("http://localhost:4000/api/team")
+      .then(response => {this.teamList = response.data.data})
+    // start dropdown 
+    $('.ui .dropdown')
+      .dropdown()
+    },
+  data : function () {
+  return {
+    postionList: [],
+    playerlevelList: [],
+    teamList: [],
+    searchData: [],
+    selectteam: []
+  }
+}
+})
+
 Vue.component('settings-modal', {
   template: `
     <div class="ui small modal" id="settingsModal">
       <div class="header">Settings</div>
       <div class="content ui form">
         <div class="field">
-          <div class="ui checkbox">
-            <input type="checkbox" v-model="$parent.multiSort">
-            <label>Multisort (use Alt+Click)</label>
-          </div>
-        </div>
-        <div class="inline fields">
-          <div class="field">
-            <div class="ui checkbox">
-              <input type="checkbox" checked="$parent.tableHeight" @change="setTableHeight($event)">
-              <label>Table Height</label>
-            </div>
-          </div>
-          <div class="field">
-            <input type="text" v-model="$parent.tableHeight">
-          </div>
-        </div>
-        <div class="ui divider"></div>
-        <div class="field">
-          <label>Pagination:</label>
-          <select class="ui simple dropdown" v-model="$parent.paginationComponent">
-            <option value="vuetable-pagination">vuetable-pagination</option>
-            <option value="vuetable-pagination-dropdown">vuetable-pagination-dropdown</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Per Page:</label>
+          <label>每頁顯示筆數:</label>
           <select class="ui simple dropdown" v-model="$parent.perPage">
+            <option :value="5">5</option>
             <option :value="10">10</option>
-            <option :value="15">15</option>
             <option :value="20">20</option>
-            <option :value="25">25</option>
+            <option :value="30">20</option>
+            <option :value="50">50</option>
+            <option :value="100">100</option>
           </select>
         </div>
         <div class="ui fluid card">
           <div class="content">
-            <div class="header">Visible fields</div>
+            <div class="header">顯示欄位</div>
           </div>
           <div v-if="vuetableFields" class="content">
             <div v-for="(field, idx) in vuetableFields" class="field">
@@ -479,7 +562,7 @@ let vm = new Vue({
   data: {
     loading: '',
     searchFor: '',
-    moreParams: { position: '2,3,4,5,6,7,8,9,10' },
+    moreParams: { team: 'all' ,position: 'all',playerlevel: 'all', player:'all'},
     fields: tableColumns,
     tableHeight: '600px',
     vuetableFields: false,
@@ -491,6 +574,7 @@ let vm = new Vue({
     paginationComponent: 'vuetable-pagination',
     perPage: 10,
     // position: 10,
+    // team: '1,2',
     paginationInfoTemplate: 'Showing record: {from} to {to} from {total} item(s)',
     lang: lang,
   },
@@ -508,6 +592,7 @@ let vm = new Vue({
   },
   methods: {
     transform (data) {
+      console.log("transform data=>",data);
       let transformed = {}
       transformed.pagination = {
         total: data.total,
@@ -566,12 +651,21 @@ let vm = new Vue({
           ImgUrl: data[i].ImgUrl
         })
       }
-      console.log('transformed=>',transformed);
+      // console.log('transformed=>',transformed);
       return transformed
     },
     showSettingsModal () {
       let self = this
       $('#settingsModal').modal({
+        detachable: true,
+        onVisible () {
+          $('.ui.checkbox').checkbox()
+        }
+      }).modal('show')
+    },
+    showFilterModal () {
+      let self = this
+      $('#filterModal').modal({
         detachable: true,
         onVisible () {
           $('.ui.checkbox').checkbox()
@@ -699,7 +793,7 @@ let vm = new Vue({
       return detValue;
     },
     showDetailRow (value) {
-      console.log('value=>',value);
+      console.log('showDetailRow value=>',value);
       let icon = this.$refs.vuetable.isVisibleDetailRow(value) ? 'down' : 'right'
       console.log('icon=>',icon);
       return [
@@ -709,12 +803,14 @@ let vm = new Vue({
       ].join('')
     },
     setFilter () {
+      console.log('setFilter');
       this.moreParams['filter'] = this.searchFor
       this.$nextTick(function() {
         this.$refs.vuetable.refresh()
       })
     },
     resetFilter () {
+      console.log('resetFilter');
       this.searchFor = ''
       this.setFilter()
     },
@@ -742,11 +838,10 @@ let vm = new Vue({
     rowClassCB (data, index) {
       return (index % 2) === 0 ? 'odd' : 'even'
     },
-    queryParams (sortOrder, currentPage, perPage ,position) {
-      // console.log(sortOrder, currentPage, perPage ,position);
+    queryParams (sortOrder, currentPage, perPage, team) {
+      console.log(sortOrder, currentPage, perPage ,team);
       return {
         'sort': sortOrder[0].field + '|' + sortOrder[0].direction,
-        'order': sortOrder[0].direction,
         'page': currentPage,
         'per_page': perPage
       }
@@ -765,10 +860,10 @@ let vm = new Vue({
     },
     onLoadSuccess (response) {
       // set pagination data to pagination-info component
-      console.log('data=>',response.data);
       this.$refs.paginationInfo.setPaginationData(response.data)
       let data = response.data;
-      console.log('data=>',data);
+      console.log('onLoadSuccess data=>',response.data);
+      // console.log('data=>',data);
       if (this.searchFor !== '') {
         for (let n in data) {
           data[n].球員名稱 = this.highlight(this.searchFor, data[n].球員名稱)
@@ -783,10 +878,12 @@ let vm = new Vue({
       }
     },
     onPaginationData (tablePagination) {
+      console.log('onPaginationData tablePagination',tablePagination);
       this.$refs.paginationInfo.setPaginationData(tablePagination)
       this.$refs.pagination.setPaginationData(tablePagination)
     },
     onChangePage (page) {
+      console.log('onChangePage page=>',page);
       this.$refs.vuetable.changePage(page)
     },
     onInitialized (fields) {
