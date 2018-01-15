@@ -157,104 +157,23 @@ Vue.component('edit-modal', {
   template: `
     <div class="ui small modal" id="editModal">
       <div class="header">新增/編輯</div>
-      <div class="field">
-        <label class="ui large label">
-          <i class="filter icon"></i>
-          球員姓名
-        </label>
-        <div class="ui left icon input">
-          <input type="text" placeholder="輸入部分球員名稱" ref="playerName">
-          <i class="users icon"></i>
-        </div>
-      </div>
-      <div class="field">
-        <label class="ui large label">
-          <i class="filter icon"></i>
-          守備位置
-        </label>
-        <div  class="ui search multiple selection dropdown" id="selectedPostion" ref="selectedPostion">
-          <div class="default text">全部守備位置</div>
-            <div class="menu">
-              <div class="item" v-for="postion in postionList" :data-value="postion.ID" >
-                {{postion.PositionNameCN}}
-              </div>
-            </div>
-        </div >
-      </div>
-      <div class="field"> 
-        <label class="ui large label">
-          <i class="filter icon"></i>
-          隊伍
-        </label>
-        <div class="ui search multiple selection dropdown" id="selectedTeam" ref="selectedTeam">
-          <div class="default text">全部隊伍</div>
-            <div class="menu" >
-              <div class="item" v-for="team in teamList" :data-value="team.ID" >
-                {{team.TeamNameCN}}
-              </div>
-            </div>
-        </div>
-      </div>
-      <div class="field"> 
-        <label class="ui large label">
-          <i class="filter icon"></i>
-          卡片類型
-        </label>
-        <div  class="ui search multiple selection dropdown"id="selectedLevel" ref="selectedLevel">
-          <div class="default text">全部類型</div>
-            <div class="menu">
-              <div class="item" v-for="playerlevel in playerlevelList" :data-value="playerlevel.ID" >
-                {{playerlevel.LevelNameCN}}
-              </div>
-            </div>
-        </div >
-      </div>
-      <div class="actions">
-        <div class="ui cancel button" @click="filterSearch"><i class="search icon"></i>Search</div>
-        <div class="ui cancel button"><i class="cancel icon"></i>Close</div>
-      </div>
     </div>
   `,
   methods: {
-    filterSearch(){
-      var playerName = this.$refs.playerName.value;
-      var selectedPosition = $('#selectedPostion')
-        .dropdown('get value')
-      ;
-      var selectedTeam = $('#selectedTeam')
-        .dropdown('get value')
-      ;
-      var selectedLevel = $('#selectedLevel')
-        .dropdown('get value')
-      ;
-        vm.moreParams.player = playerName;
-        vm.moreParams.team = selectedTeam;
-        vm.moreParams.position = selectedPosition;
-        vm.moreParams.playerlevel = selectedLevel;
-        vm.$refs.vuetable.refresh();
-    }
+    
   },
   mounted() {
-    //get postion list
-    axios.get("http://localhost:4000/api/dposition?Type=F")
-      .then(response => {this.postionList = response.data.data})
-    //get playerlevel list
-    axios.get("http://localhost:4000/api/playerlevel")
-      .then(response => {this.playerlevelList = response.data.data})
-    //get team list
-    axios.get("http://localhost:4000/api/team")
-      .then(response => {this.teamList = response.data.data})
-    // start dropdown 
+    
     $('.ui .dropdown')
       .dropdown()
     },
   data : function () {
   return {
-    postionList: [],
-    playerlevelList: [],
-    teamList: [],
-    searchData: [],
-    selectteam: []
+    // postionList: [],
+    // playerlevelList: [],
+    // teamList: [],
+    // searchData: [],
+    // selectteam: []
   }
 }
 })
@@ -306,7 +225,7 @@ Vue.component('filter-modal', {
           <i class="filter icon"></i>
           卡片類型
         </label>
-        <div  class="ui search multiple selection dropdown"id="selectedLevel" ref="selectedLevel">
+        <div  class="ui search multiple selection dropdown" id="selectedLevel" ref="selectedLevel">
           <div class="default text">全部類型</div>
             <div class="menu">
               <div class="item" v-for="playerlevel in playerlevelList" :data-value="playerlevel.ID" >
@@ -315,30 +234,13 @@ Vue.component('filter-modal', {
             </div>
         </div >
       </div>
-      <div class="ui form">
-        <div class="inline fields">
-          <label class="ui large label">
+      <div class="field">
+        <label class="ui large label">
             <i class="filter icon"></i>
             姿勢
-          </label>
-          <div class="field">
-            <div class="ui radio checkbox">
-              <input type="radio" name="frequency" checked="checked" val="all">
-              <label>兩者皆可</label>
-            </div>
-          </div>
-          <div class="field">
-            <div class="ui radio checkbox">
-              <input type="radio" name="frequency" val="Y">
-              <label>有</label>
-            </div>
-          </div>
-          <div class="field">
-            <div class="ui radio checkbox">
-              <input type="radio" name="frequency" val="N">
-              <label>無</label>
-            </div>
-          </div>
+        </label>
+        <div class="ui slider checkbox" id="selectedStyle" ref="selectedStyle">
+          <input type="checkbox">
         </div>
       </div>
 
@@ -348,11 +250,37 @@ Vue.component('filter-modal', {
       </div>
     </div>
   `,
+  // <div class="ui form">
+  //       <div class="inline fields">
+  //         <label class="ui large label">
+  //           <i class="filter icon"></i>
+  //           姿勢
+  //         </label>
+  //         <div class="field">
+  //           <div class="ui radio checkbox">
+  //             <input type="radio" name="frequency" checked="checked" val="all">
+  //             <label>兩者皆可</label>
+  //           </div>
+  //         </div>
+  //         <div class="field">
+  //           <div class="ui radio checkbox">
+  //             <input type="radio" name="frequency" val="Y">
+  //             <label>有</label>
+  //           </div>
+  //         </div>
+  //         <div class="field">
+  //           <div class="ui radio checkbox">
+  //             <input type="radio" name="frequency" val="N">
+  //             <label>無</label>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
   methods: {
     filterSearch(){
       var playerName = this.$refs.playerName.value;
-      var style = $('#frequency').checkbox('is radio');
-      console.log('style',style);
+      var selectedStyle = $('#selectedStyle').checkbox('is checked');
+      console.log('selectedStyle',selectedStyle);
       var selectedPosition = $('#selectedPostion')
         .dropdown('get value')
       ;
@@ -366,18 +294,19 @@ Vue.component('filter-modal', {
         vm.moreParams.team = selectedTeam;
         vm.moreParams.position = selectedPosition;
         vm.moreParams.playerlevel = selectedLevel;
+        vm.moreParams.style=selectedStyle;
         vm.$refs.vuetable.refresh();
     }
   },
   mounted() {
     //get postion list
-    axios.get("http://localhost:4000/api/dposition?Type=F")
+    axios.get("/api/dposition?Type=F")
       .then(response => {this.postionList = response.data.data})
     //get playerlevel list
-    axios.get("http://localhost:4000/api/playerlevel")
+    axios.get("/api/playerlevel")
       .then(response => {this.playerlevelList = response.data.data})
     //get team list
-    axios.get("http://localhost:4000/api/team")
+    axios.get("/api/team")
       .then(response => {this.teamList = response.data.data})
     // start dropdown 
     $('.ui .dropdown')
@@ -697,13 +626,13 @@ let vm = new Vue({
   data: {
     loading: '',
     searchFor: '',
-    moreParams: { team: 'all' ,position: 'all',playerlevel: 'all', player:'all'},
+    moreParams: { team: 'all' ,position: 'all',playerlevel: 'all', player:'all' , style : 'false'},
     fields: tableColumns,
     tableHeight: '600px',
     vuetableFields: false,
     sortOrder: [{
-        field: 'id',
-        direction: 'asc',
+        field: 'ev',
+        direction: 'desc',
     }],
     multiSort: true,
     paginationComponent: 'vuetable-pagination',
