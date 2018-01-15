@@ -109,14 +109,14 @@
                             </button>
                             <button class="ui basic button" @click="showEditModal">
                               <i class="icon user"></i>
-                              Add Friend
+                              新增
                             </button>
                           </div>
                         </div>
                       <div class="ui right aligned seven wide column">
                         <button class="ui basic button" id="settingsBtn" @click="showSettingsModal">
                           <i class="setting icon"></i>
-                          Settings
+                          顯示設定
                         </button>
                       </div>
                   </div> 
@@ -153,6 +153,9 @@
                     </div>
 
                   </div><!-- vuetable-wrapper -->
+                  <edit-modal ref="editModal"
+                    :vuetable-fields="vuetableFields"
+                  ></edit-modal>
 
                   <settings-modal ref="settingsModal"
                     :vuetable-fields="vuetableFields"
@@ -160,9 +163,7 @@
                   <filter-modal ref="filterModal"
                     :vuetable-fields="vuetableFields"
                   ></filter-modal>
-                  <edit-modal ref="filterModal"
-                    :vuetable-fields="vuetableFields"
-                  ></edit-modal>
+                  
 
                 </div><!-- content -->
 

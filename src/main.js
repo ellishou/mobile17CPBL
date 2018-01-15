@@ -155,25 +155,119 @@ Vue.component('my-detail-row', {
 
 Vue.component('edit-modal', {
   template: `
-    <div class="ui small modal" id="editModal">
-      <div class="header">新增/編輯</div>
-    </div>
+      <form class="ui small modal" id="editModal">
+        <h4 class="ui dividing header">新增</h4>
+        <div class="three field">
+          <div class="ui left icon input">
+            <input type="text" placeholder="輸入球員名稱" ref="playerName">
+          </div>
+          <div  class="ui search selection dropdown" >
+            <div class="default text">卡片類型</div>
+              <div class="menu">
+                <div class="item" v-for="playerlevel in playerlevelList" :data-value="playerlevel.ID" >
+                  {{playerlevel.LevelNameCN}}
+                </div>
+              </div>
+            </div>
+          <div class="ui left icon input">
+            <select class="ui fluid dropdown">
+                <option value="">年度</option>
+                <option value="2018">2018</option>
+                <option value="2017">2017</option>
+                <option value="2016">2016</option>
+                <option value="2015">2015</option>
+                <option value="2014">2014</option>
+                <option value="2013">2013</option>
+            </select>
+          </div>
+          <div class="ui left icon input" id="month" >
+            <select class="ui fluid dropdown">
+                <option value="">月份</option>
+                <option :value="n"   v-for= "n in 12">{{n}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="fields">
+          <div class="field">
+            <div class="ui labeled input">
+              <div class="ui label">L打擊</div>
+              <input type="text" placeholder="輸入L打擊數值" ref="HitL">
+            </div>
+            <div class="ui labeled input">
+              <div class="ui label">R打擊</div>
+              <input type="text" placeholder="輸入R打擊數值" ref="HitR">
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui labeled input">
+              <div class="ui label">力量</div>
+              <input type="text" placeholder="輸入力量數值" ref="Pow">
+            </div>
+            <div class="ui labeled input">
+              <div class="ui label">選球</div>
+              <input type="text" placeholder="輸入選球數值" ref="Eye">
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui labeled input">
+              <div class="ui label">跑壘</div>
+              <input type="text" placeholder="輸入跑壘數值" ref="Agi">
+            </div>
+            <div class="ui labeled input">
+              <div class="ui label">守備</div>
+              <input type="text" placeholder="輸入守備數值" ref="Def">
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui labeled input">
+              <div class="ui label">傳球</div>
+              <input type="text" placeholder="輸入傳球數值" ref="Pass">
+            </div>
+            <div class="ui labeled input">
+              <div class="ui label">總評</div>
+              <input type="text" placeholder="總評試算" ref="Ev" disabled="true" >
+              <div class="ui corner label">
+                <i class="asterisk icon"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui checkbox">
+            <input type="checkbox" tabindex="0" class="hidden">
+            <label>I agree to the Terms and Conditions</label>
+          </div>
+        </div>
+        <div class="ui right field">
+          <button class="ui primary button" type="submit">新增</button>
+          <button class="ui cancel button" type="cancel">取消</button>
+        </div>
+      </form>
   `,
   methods: {
     
   },
   mounted() {
-    
+    //get postion list
+    axios.get("/api/dposition?Type=F")
+      .then(response => {this.postionList = response.data.data})
+    //get playerlevel list
+    axios.get("/api/playerlevel")
+      .then(response => {this.playerlevelList = response.data.data})
+    //get team list
+    axios.get("/api/team")
+      .then(response => {this.teamList = response.data.data})
+    // start dropdown 
     $('.ui .dropdown')
       .dropdown()
     },
   data : function () {
   return {
-    // postionList: [],
-    // playerlevelList: [],
-    // teamList: [],
-    // searchData: [],
-    // selectteam: []
+    postionList: [],
+    playerlevelList: [],
+    teamList: [],
+    searchData: [],
+    selectteam: []
   }
 }
 })
@@ -181,14 +275,14 @@ Vue.component('edit-modal', {
 Vue.component('filter-modal', {
   template: `
     <div class="ui small modal" id="filterModal">
-      <div class="header">篩選</div>
+      <h4 class="ui dividing header">篩選</h4>
       <div class="field">
         <label class="ui large label">
           <i class="filter icon"></i>
           球員姓名
         </label>
         <div class="ui left icon input">
-          <input type="text" placeholder="輸入部分球員名稱" ref="playerName">
+          <input type="text" placeholder="輸入欲尋找的球員名稱" ref="playerName">
           <i class="users icon"></i>
         </div>
       </div>
@@ -232,7 +326,7 @@ Vue.component('filter-modal', {
                 {{playerlevel.LevelNameCN}}
               </div>
             </div>
-        </div >
+        </div>
       </div>
       <div class="field">
         <label class="ui large label">
