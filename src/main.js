@@ -155,42 +155,61 @@ Vue.component('my-detail-row', {
 
 Vue.component('edit-modal', {
   template: `
-      <form class="ui small modal" id="editModal">
-        <h4 class="ui dividing header">新增</h4>
-        <div class="three field">
-          <div class="ui left icon input">
-            <input type="text" placeholder="輸入球員名稱" ref="playerName">
+      <form class="ui modal" id="editModal">
+        <h4 class="ui dividing header">新增
+            <button class="ui primary button" type="submit">新增</button>
+            <button class="ui cancel button" type="cancel">取消</button>
+        </h4>
+        <div class="ui left icon input">
+          <div v-if="!image">
+            <label for="file" class="ui icon button">
+              <i class="file icon"></i>
+              Load Picture</label>
+            <input type="file" id="file" @change="onFileChange" style="display:none">
           </div>
-          <div  class="ui search selection dropdown" >
-            <div class="default text">卡片類型</div>
-              <div class="menu">
-                <div class="item" v-for="playerlevel in playerlevelList" :data-value="playerlevel.ID" >
-                  {{playerlevel.LevelNameCN}}
+          <div v-else>
+            <div class="ui medium  image">
+              <img :src="image" />
+              <button class="ui icon button" @click="removeImage">Remove image</button>
+            </div>
+          </div>
+        </div>
+        <div class="four fields">
+          <div class="field">
+            <div class="ui left icon input">
+              <input type="text" placeholder="輸入球員名稱" ref="playerName">
+            </div>
+            <div class="ui search selection dropdown" >
+              <div class="default text">卡片類型</div>
+                <div class="menu">
+                  <div class="item" v-for="playerlevel in playerlevelList" :data-value="playerlevel.ID" >
+                    {{playerlevel.LevelNameCN}}
+                  </div>
                 </div>
               </div>
+            <div class="ui left icon input">
+              <select class="ui fluid dropdown">
+                  <option value="">年度</option>
+                  <option value="2018">2018</option>
+                  <option value="2017">2017</option>
+                  <option value="2016">2016</option>
+                  <option value="2015">2015</option>
+                  <option value="2014">2014</option>
+                  <option value="2013">2013</option>
+              </select>
             </div>
-          <div class="ui left icon input">
-            <select class="ui fluid dropdown">
-                <option value="">年度</option>
-                <option value="2018">2018</option>
-                <option value="2017">2017</option>
-                <option value="2016">2016</option>
-                <option value="2015">2015</option>
-                <option value="2014">2014</option>
-                <option value="2013">2013</option>
-            </select>
-          </div>
-          <div class="ui left icon input" id="month" >
-            <select class="ui fluid dropdown">
-                <option value="">月份</option>
-                <option :value="n"   v-for= "n in 12">{{n}}</option>
-            </select>
+            <div class="ui left icon input" id="month" >
+              <select class="ui fluid dropdown">
+                  <option value="">月份</option>
+                  <option :value="n"   v-for= "n in 12">{{n}}</option>
+              </select>
+            </div>
           </div>
         </div>
         <div class="fields">
           <div class="field">
-            <div class="ui labeled input">
-              <div class="ui label">L打擊</div>
+            <div class="ui labeled input" >
+              <div class="ui label" >L打擊</div>
               <input type="text" placeholder="輸入L打擊數值" ref="HitL">
             </div>
             <div class="ui labeled input">
@@ -238,14 +257,28 @@ Vue.component('edit-modal', {
             <label>I agree to the Terms and Conditions</label>
           </div>
         </div>
-        <div class="ui right field">
-          <button class="ui primary button" type="submit">新增</button>
-          <button class="ui cancel button" type="cancel">取消</button>
-        </div>
       </form>
   `,
   methods: {
-    
+    onFileChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length)
+        return;
+      this.createImage(files[0]);
+    },
+    createImage(file) {
+      var image = new Image();
+      var reader = new FileReader();
+      var vm = this;
+
+      reader.onload = (e) => {
+        vm.image = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+    removeImage: function (e) {
+      this.image = '';
+    }
   },
   mounted() {
     //get postion list
@@ -267,7 +300,8 @@ Vue.component('edit-modal', {
     playerlevelList: [],
     teamList: [],
     searchData: [],
-    selectteam: []
+    selectteam: [],
+    image: ''
   }
 }
 })
