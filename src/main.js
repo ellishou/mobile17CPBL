@@ -49,7 +49,7 @@ Vue.component('ImgShow', {
     onClick (data) {
       var options = {
         title: '',
-        text: '<img src="./static/'+data.ImgUrl+'">',
+        text: '<img class="ui small image" src="./static/'+data.ImgUrl+'">',
         html: true
       };
       sweetAlert(options)
@@ -155,104 +155,46 @@ Vue.component('my-detail-row', {
 
 Vue.component('edit-modal', {
   template: `
-      <form class="ui large modal" id="editModal">
-        <h4 class="ui dividing header">新增
-            <button class="ui primary button" type="submit">新增</button>
-            <button class="ui cancel button" type="cancel">取消</button>
-        </h4>
-        <div class="four fields">
-          <div class="field">
-            <div class="ui left icon input">
-              <input type="text" placeholder="輸入球員名稱" ref="playerName">
-            </div>
-            <div class="ui search selection dropdown" >
-              <div class="default text">卡片類型</div>
-                <div class="menu">
-                  <div class="item" v-for="playerlevel in playerlevelList" :data-value="playerlevel.ID" >
-                    {{playerlevel.LevelNameCN}}
-                  </div>
-                </div>
-              </div>
-            <div class="ui left icon input">
-              <select class="ui fluid dropdown">
-                  <option value="">年度</option>
-                  <option value="2018">2018</option>
-                  <option value="2017">2017</option>
-                  <option value="2016">2016</option>
-                  <option value="2015">2015</option>
-                  <option value="2014">2014</option>
-                  <option value="2013">2013</option>
-              </select>
-            </div>
-            <div class="ui left icon input" id="month" >
-              <select class="ui fluid dropdown">
-                  <option value="">月份</option>
-                  <option :value="n"   v-for= "n in 12">{{n}}</option>
-              </select>
-            </div>
-            <label for="file" class="ui icon button" v-if="!image">
-              <i class="file icon"></i>
-              Load Picture</label>
-              <input type="file" id="file" @change="onFileChange" style="display:none" v-if="!image">
-              <div class="ui left" v-else>
-                <button class="ui icon button" @click="removeImage" ><i class="remove icon"></i></button>
-                <img class="ui medium right floated image" :src="image" />
-              </div>
-            </div>
-          </div>
+    <div class="ui modal" id="editModal" >
+      <i class="close icon"></i>
+      <div class="header">
+        新增
+      </div>
+
+      <div class="image content">
+
+        <div class="ui medium image">
+          <img src="static/image.png">
         </div>
-        <div class="fields">
-          <div class="field">
-            <div class="ui labeled input" >
-              <div class="ui label" >L打擊</div>
-              <input type="text" placeholder="輸入L打擊數值" ref="HitL">
-            </div>
-            <div class="ui labeled input">
-              <div class="ui label">R打擊</div>
-              <input type="text" placeholder="輸入R打擊數值" ref="HitR">
-            </div>
+
+        <div class="description">
+          
+          <div class="ui input">
+            <input type="text" placeholder="輸入球員名稱" ref="playerName">
           </div>
-          <div class="field">
-            <div class="ui labeled input">
-              <div class="ui label">力量</div>
-              <input type="text" placeholder="輸入力量數值" ref="Pow">
-            </div>
-            <div class="ui labeled input">
-              <div class="ui label">選球</div>
-              <input type="text" placeholder="輸入選球數值" ref="Eye">
-            </div>
+          <div class="ui labeled input" >
+            <div class="ui label" >名稱</div>
+            <input type="text" placeholder="輸入球員名稱" ref="HitL">
           </div>
-          <div class="field">
-            <div class="ui labeled input">
-              <div class="ui label">跑壘</div>
-              <input type="text" placeholder="輸入跑壘數值" ref="Agi">
-            </div>
-            <div class="ui labeled input">
-              <div class="ui label">守備</div>
-              <input type="text" placeholder="輸入守備數值" ref="Def">
-            </div>
+          <div class="ui labeled input" >
+            <div class="ui label" >L打擊</div>
+            <input type="text" placeholder="輸入L打擊數值" ref="HitL">
           </div>
-          <div class="field">
-            <div class="ui labeled input">
-              <div class="ui label">傳球</div>
-              <input type="text" placeholder="輸入傳球數值" ref="Pass">
-            </div>
-            <div class="ui labeled input">
-              <div class="ui label">總評</div>
-              <input type="text" placeholder="總評試算" ref="Ev" disabled="true" >
-              <div class="ui corner label">
-                <i class="asterisk icon"></i>
-              </div>
-            </div>
-          </div>
+
         </div>
-        <div class="field">
-          <div class="ui checkbox">
-            <input type="checkbox" tabindex="0" class="hidden">
-            <label>I agree to the Terms and Conditions</label>
-          </div>
-        </div>
-      </form>
+      </div>
+
+    <div class="actions">
+      <div class="ui black deny button">
+        取消
+      </div>
+      <div class="ui positive right labeled icon button">
+        新增
+        <i class="checkmark icon"></i>
+      </div>
+    </div>
+
+    </div>
   `,
   methods: {
     onFileChange(e) {
@@ -296,7 +238,7 @@ Vue.component('edit-modal', {
     teamList: [],
     searchData: [],
     selectteam: [],
-    image: ''
+    image: 'static/image.png'
   }
 }
 })
@@ -560,13 +502,13 @@ let tableColumns = [
     width: '100px',
     callback: 'mouseMove'
   },
-  // {
-  //   name: '__component:ImgShow',
-  //   title: '照片',
-  //   titleClass: 'center aligned',
-  //   dataClass: 'center aligned',
-  //   width: '62px'
-  // },
+  {
+    name: '__component:ImgShow',
+    title: '照片',
+    titleClass: 'center aligned',
+    dataClass: 'center aligned',
+    width: '62px'
+  },
   // {
   //   name: '__component:custom-actions',
   //   title: 'Actions',
@@ -942,7 +884,7 @@ let vm = new Vue({
         case 'All Star':
             return '<span class="ui purple label">All Star</span>'
         case 'TOP':
-            return '<span class="ui black label">TOP</span>'
+            return '<span class="ui green label">TOP</span>'
         case 'TW-APBC':
             return '<a class="ui label"><i class="tw flag"></i>APBC</a>'
           break;
