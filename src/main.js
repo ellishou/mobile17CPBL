@@ -155,25 +155,11 @@ Vue.component('my-detail-row', {
 
 Vue.component('edit-modal', {
   template: `
-      <form class="ui modal" id="editModal">
+      <form class="ui large modal" id="editModal">
         <h4 class="ui dividing header">新增
             <button class="ui primary button" type="submit">新增</button>
             <button class="ui cancel button" type="cancel">取消</button>
         </h4>
-        <div class="ui left icon input">
-          <div v-if="!image">
-            <label for="file" class="ui icon button">
-              <i class="file icon"></i>
-              Load Picture</label>
-            <input type="file" id="file" @change="onFileChange" style="display:none">
-          </div>
-          <div v-else>
-            <div class="ui medium  image">
-              <img :src="image" />
-              <button class="ui icon button" @click="removeImage">Remove image</button>
-            </div>
-          </div>
-        </div>
         <div class="four fields">
           <div class="field">
             <div class="ui left icon input">
@@ -203,6 +189,15 @@ Vue.component('edit-modal', {
                   <option value="">月份</option>
                   <option :value="n"   v-for= "n in 12">{{n}}</option>
               </select>
+            </div>
+            <label for="file" class="ui icon button" v-if="!image">
+              <i class="file icon"></i>
+              Load Picture</label>
+              <input type="file" id="file" @change="onFileChange" style="display:none" v-if="!image">
+              <div class="ui left" v-else>
+                <button class="ui icon button" @click="removeImage" ><i class="remove icon"></i></button>
+                <img class="ui medium right floated image" :src="image" />
+              </div>
             </div>
           </div>
         </div>
