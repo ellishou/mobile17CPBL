@@ -161,28 +161,90 @@ Vue.component('edit-modal', {
         新增
       </div>
 
-      <div class="image content">
-
-        <div class="ui medium image">
-          <img src="static/image.png">
-        </div>
+      <div class="scrolling image content">
+        <input type="file" id="file" @change="onFileChange" style="display:none">
+          <div class="ui medium image">
+            <img :src="image">
+          </div>
+        </input>
 
         <div class="description">
-          
-          <div class="ui input">
-            <input type="text" placeholder="輸入球員名稱" ref="playerName">
-          </div>
-          <div class="ui labeled input" >
-            <div class="ui label" >名稱</div>
-            <input type="text" placeholder="輸入球員名稱" ref="HitL">
-          </div>
-          <div class="ui labeled input" >
-            <div class="ui label" >L打擊</div>
-            <input type="text" placeholder="輸入L打擊數值" ref="HitL">
+          <div class="field">
+            <div>
+              <label for="file" class="ui icon button">
+                <i class="file icon"></i>
+                  Load Picture
+              </label>
+              <input type="file" id="file" @change="onFileChange" style="display:none">
+            </div>
           </div>
 
-        </div>
+          <div class="field">
+            <div class="ui labeled input" >
+              <div class="ui label" >名稱</div>
+              <input type="text" placeholder="輸入球員名稱" ref="HitL">
+            </div>
+            <div class="ui labeled input">
+              <div class="ui label">總評</div>
+                <input type="text" placeholder="總評試算" ref="Ev" disabled="true" >
+              <div class="ui corner label">
+                    <i class="asterisk icon"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="ui labeled input" >
+              <div class="ui label" >L打擊</div>
+              <input type="text" placeholder="輸入L打擊數值" ref="HitL">
+            </div>
+            <div class="ui labeled input">
+              <div class="ui label">R打擊</div>
+              <input type="text" placeholder="輸入R打擊數值" ref="HitR">
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="ui labeled input">
+              <div class="ui label">力量</div>
+              <input type="text" placeholder="輸入力量數值" ref="Pow">
+            </div>
+            <div class="ui labeled input">
+              <div class="ui label">選球</div>
+              <input type="text" placeholder="輸入選球數值" ref="Eye">
+            </div>
+          </div>
+          
+          <div class="field">
+            <div class="ui labeled input">
+              <div class="ui label">跑壘</div>
+              <input type="text" placeholder="輸入跑壘數值" ref="Agi">
+            </div>
+            <div class="ui labeled input">
+              <div class="ui label">守備</div>
+              <input type="text" placeholder="輸入守備數值" ref="Def">
+            </div>
+
+            <div class="ui labeled input">
+              <div class="ui label">傳球</div>
+              <input type="text" placeholder="輸入傳球數值" ref="Pass">
+            </div>
+            <div class="ui labeled input">
+              <div class="ui label">卡別</div>
+                <div class="ui search selection dropdown" >
+                  <div class="default text">卡片類型</div>
+                    <div class="menu">
+                      <div class="item" v-for="playerlevel in playerlevelList" :data-value="playerlevel.ID" >
+                        {{playerlevel.LevelNameCN}}
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
       </div>
+
 
     <div class="actions">
       <div class="ui black deny button">
@@ -803,12 +865,7 @@ let vm = new Vue({
     },
     showEditModal () {
       let self = this
-      $('#editModal').modal({
-        detachable: true,
-        onVisible () {
-          $('.ui.checkbox').checkbox()
-        }
-      }).modal('show')
+      $('#editModal').modal('show')
     },
     showLoader () {
       this.loading = 'loading'
