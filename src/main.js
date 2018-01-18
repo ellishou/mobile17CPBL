@@ -162,11 +162,9 @@ Vue.component('edit-modal', {
       </div>
 
       <div class="scrolling image content">
-        <input type="file" id="file" @change="onFileChange" style="display:none">
-          <div class="ui medium image">
+          <div class="ui large image">
             <img :src="image">
           </div>
-        </input>
 
         <div class="description">
           <div class="field">
@@ -241,6 +239,29 @@ Vue.component('edit-modal', {
                 </div>
               </div>
             </div>
+
+
+          <div class="field">
+            <div class="ui labeled input">
+              <div class="ui label">年度</div>
+                <select class="ui fluid dropdown">
+                  <option value="">年度</option>
+                  <option value="2018">2018</option>
+                  <option value="2017">2017</option>
+                  <option value="2016">2016</option>
+                  <option value="2015">2015</option>
+                  <option value="2014">2014</option>
+                  <option value="2013">2013</option>
+                </select>  
+            </div>
+            <div class="ui labeled input">
+              <div class="ui label">月份</div>
+                <select class="ui fluid dropdown">
+                  <option value="">月份</option>
+                  <option :value="n"   v-for= "n in 12">{{n}}</option>
+                </select>
+              </div>
+            </div>
           </div>
 
       </div>
@@ -274,9 +295,6 @@ Vue.component('edit-modal', {
         vm.image = e.target.result;
       };
       reader.readAsDataURL(file);
-    },
-    removeImage: function (e) {
-      this.image = '';
     }
   },
   mounted() {
@@ -361,6 +379,24 @@ Vue.component('filter-modal', {
             </div>
         </div>
       </div>
+      <div class="field"> 
+        <label class="ui large label">
+          <i class="filter icon"></i>
+          年度月份
+        </label>
+          <div  class="ui search multiple selection dropdown" id="selectedYear" ref="selectedYear">
+            <div class="default text">全部年度</div>
+              <div class="menu">
+                <div class="item" v-for="n in [2013,2014,2015,2016,2017]" :data-value="n">{{n}}年</div>
+              </div>
+          </div>
+          <div  class="ui search multiple selection dropdown" id="selectedMonth" ref="selectedMonth">
+            <div class="default text">全部年度</div>
+              <div class="menu">
+                <div class="item" v-for="n in [01,02,03,04,05,06,07,08,09,10,11,12]" :data-value="n">{{n}}月</div>
+              </div>
+          </div>
+      </div>
       <div class="field">
         <label class="ui large label">
             <i class="filter icon"></i>
@@ -417,6 +453,15 @@ Vue.component('filter-modal', {
       var selectedLevel = $('#selectedLevel')
         .dropdown('get value')
       ;
+      var selectedYear = $('#selectedYear')
+        .dropdown('get value')
+      ;
+      var selectedMonth = $('#selectedMonth')
+        .dropdown('get value')
+      ;
+        console.log(selectedYear);
+        console.log(selectedMonth);
+
         vm.moreParams.player = playerName;
         vm.moreParams.team = selectedTeam;
         vm.moreParams.position = selectedPosition;
@@ -564,13 +609,13 @@ let tableColumns = [
     width: '100px',
     callback: 'mouseMove'
   },
-  {
-    name: '__component:ImgShow',
-    title: '照片',
-    titleClass: 'center aligned',
-    dataClass: 'center aligned',
-    width: '62px'
-  },
+  // {
+  //   name: '__component:ImgShow',
+  //   title: '照片',
+  //   titleClass: 'center aligned',
+  //   dataClass: 'center aligned',
+  //   width: '62px'
+  // },
   // {
   //   name: '__component:custom-actions',
   //   title: 'Actions',
@@ -678,7 +723,7 @@ let tableColumns = [
   {
     name: '守備適性',
     title: ' 守備適性',
-    sortField: 'Dpv',
+    // sortField: 'Dpv',
     callback: 'formateDefValue',
     titleClass: 'center aligned',
     dataClass: 'center aligned',
