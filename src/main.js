@@ -393,7 +393,7 @@ Vue.component('filter-modal', {
           <div  class="ui search multiple selection dropdown" id="selectedMonth" ref="selectedMonth">
             <div class="default text">全部年度</div>
               <div class="menu">
-                <div class="item" v-for="n in [01,02,03,04,05,06,07,08,09,10,11,12]" :data-value="n">{{n}}月</div>
+                <div class="item" v-for="n in ['01','02','03','04','05','06','07','08','09','10','11','12']" :data-value="n">{{n}}月</div>
               </div>
           </div>
       </div>
@@ -467,6 +467,8 @@ Vue.component('filter-modal', {
         vm.moreParams.position = selectedPosition;
         vm.moreParams.playerlevel = selectedLevel;
         vm.moreParams.style=selectedStyle;
+        vm.moreParams.year=selectedYear;
+        vm.moreParams.month=selectedMonth;
         vm.$refs.vuetable.refresh();
     }
   },
